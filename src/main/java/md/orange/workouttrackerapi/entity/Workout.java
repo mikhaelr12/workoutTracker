@@ -2,11 +2,13 @@ package md.orange.workouttrackerapi.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import md.orange.workouttrackerapi.enums.Status;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+@Builder
 @Table(name = "workouts")
 @Entity
 @Data
@@ -26,7 +28,7 @@ public class Workout {
     @Column(name = "workout_time")
     private LocalDateTime workoutTime;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "workout_exercises",
             joinColumns = @JoinColumn(name = "workout_id"),
@@ -34,4 +36,11 @@ public class Workout {
     )
     private Set<Exercise> exercises;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @Column(name = "user_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_USER_WORKOUT"))
+    private Long userId;
 }

@@ -1,9 +1,15 @@
 package md.orange.workouttrackerapi.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Table(name ="exercises")
 @Entity
+@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Exercise {
 
     @Id
@@ -11,7 +17,7 @@ public class Exercise {
     @SequenceGenerator(name = "exercise_id_seq", sequenceName = "exercise_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "repetitions")
@@ -23,5 +29,7 @@ public class Exercise {
     @Column(name = "weights")
     private Integer weights;
 
-
+    @Column(name = "muscle_id")
+    @JoinColumn(foreignKey = @ForeignKey(name = "FK_MUSCLE_EXERCISE"))
+    private Long muscleId;
 }
